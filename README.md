@@ -45,7 +45,7 @@ bods[bods.length-1].fill = color(0,255,0);
 </b>
 
 The wrapper also allows you to create rectangles and 'ghost' bodies (bodies that are not rendered, for use with your own rendering code).
-You can control the stroke and fill colours, too, through the wrapper, as well as using textures (.jpg or .png).
+You can control the stroke and fill colours, too, through the wrapper, as well as using textures (.jpg or .png -- e.g. after having created a new body, <b>bods[bods.length-1].texture = exampleTextureVariable;</b> ).
 
 By default, the wrapper will create bodies around the canvas area so that created bodies stay on screen. If bodies fly off screen, by default they will be removed from the array of bodies (to help performance); though, if you don't want this to happen, you can turn off the behaviour as needed (see .OSR in the wrapper).
 
@@ -54,6 +54,6 @@ You can manage gravity, change the size and rotation of bodies, and switch bodie
 Currently, I'm working on a way to handle collision events. You can do this with the present version, and for example see my [No Man's Flappycraft](http://www.redhendev.com/NoMansFlappyCraft) to see this functionality in action :)
 However, at present this would require you to fiddle with the code of the wrapper yourself -- simple enough, but not ideal.
 
-If you'd like any additional features, or would like to help out -- do get in contact. Hope this is useful :)
+If you'd like any additional features, or have found a bug/issue -- do get in contact. Hope this is useful :)
 
 
