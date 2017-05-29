@@ -54,6 +54,8 @@ You can manage gravity, change the size and rotation of bodies, and switch bodie
 Currently, I'm working on a way to handle collision events. You can do this with the present version, and for example see my [No Man's Flappycraft](http://www.redhendev.com/NoMansFlappyCraft) to see this functionality in action :)
 However, at present this would require you to fiddle with the code of the wrapper yourself -- simple enough, but not ideal.
 
-If you'd like any additional features, or have found a bug/issue -- do get in contact. Hope this is useful :)
+If you'd like any additional features, or have found a bug/issue -- do get in contact. 
+
+Hope the Wrapper is useful! Happy coding! :)
 
 
