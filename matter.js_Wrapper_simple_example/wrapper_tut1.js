@@ -38,14 +38,30 @@ function mouseDragged(){
 }
 function touchEnded(){
     
-    // Instantiate a new circle or box
+    // Instantiate a new circle or green brick
     // depending on where on screen user
     // clicks/taps.
-    if (canSpawn && mouseX < width/2)
-    RedHen_2DPhysics.newObj("box", mouseX, mouseY, 28);
+    if (canSpawn && mouseX < width/2){
+    // Create a rectangle at the mouse's position.
+    // The rectangle's length will be 40, and height the golden ratio smaller :)
+    RedHen_2DPhysics.newObj("rectangle", mouseX, mouseY, 40, 40*0.618);
+
+    // Set the fill colour of this newly created body.
+    // To refer to the latest body created, find it at
+    // the end of the wrapper's 'bods' array: bods[bods.length-1]
+
+    bods[bods.length-1].fill = color(0,255,0);   
+        
+    }
+        
+    // If right side of screen, make a circle.    
     if (canSpawn && mouseX > width/2)
     RedHen_2DPhysics.newObj("circle", mouseX, mouseY, 28);
     
+    // Because this input did not involve
+    // dragging, the user may want to spawn
+    // an object with a tap/click. So, set
+    // canSpawn to true here.
     canSpawn = true;
 }
 
