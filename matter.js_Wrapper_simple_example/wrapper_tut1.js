@@ -10,7 +10,10 @@ function setup(){
     canvas = createCanvas(windowWidth,windowHeight);
     background(72);
     
-    RedHen_2DPhysics.setupMatter();
+    // Set to 'true' for solid window boundaries. If 'false',
+    // created bodies can escape window area 
+    // (and will then be deleted from array).
+    RedHen_2DPhysics.setupMatter(true);
 }
 
 // ***** UDPATE LOOP *****
