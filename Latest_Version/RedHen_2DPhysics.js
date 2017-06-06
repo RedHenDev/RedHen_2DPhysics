@@ -38,7 +38,7 @@ class RedHen_2DPhysics {
     
     // Main program calls this to begin using this wrapper class.
     // Sets up mouse contraint by default.
-    static setupMatter(){
+    static setupMatter(_createWindowBounds){
         
         // Instantiate a matter.js world and begin physics.
         myEngine = Matter.Engine.create();
@@ -56,16 +56,35 @@ class RedHen_2DPhysics {
         // We have functionality, but not yet implemented for general use.
         //this.setupCollisions();
         
-        // Instantiate a box as default!
-        // NB We position this to make
-        // a floor/ground, and set to
-        // static.
+        // Create window bounds if parameter set to true.
+        if (_createWindowBounds != null &&
+            _createWindowBounds === true)
+            this.createWindowBounds();
+        
+        // Make sure we are drawing rectangles from their centres.
+        rectMode(CENTER);
+        imageMode(CENTER);
+    }
+    
+    // Gives you access to the last object
+    // you instantiated; this is to be found,
+    // then, on the very end of the bods array.
+    static lastObjectCreated(){
+        return bods[bods.length-1];
+    }
+    
+    
+    static createWindowBounds(){
+           
+        // Ground.
         this.newObj
         ("box",width/2,height-9+width/2,width, true);
         bods[0].makeStatic();
-        bods[0].fill = color(200);
+        bods[0].fill = color(0,255,0);
+        bods[0].stroke = color(0,200,0);
+        bods[0].strokeWeight = 4;
         bods[0].OSR = false;
-        // Edges! To stop escaping from screen.
+        // Edges.
         RedHen_2DPhysics.newObj ("GhostRectangle",0-10,height/2,20,height);
         bods[bods.length-1].makeStatic();
         bods[bods.length-1].OSR = false;
@@ -73,10 +92,9 @@ class RedHen_2DPhysics {
         10,height/2,20,height);
         bods[bods.length-1].makeStatic();
         bods[bods.length-1].OSR = false;
-        
-        // Make sure we are drawing rectangles from their centres.
-        rectMode(CENTER);
-        imageMode(CENTER);
+        // Glass ceiling.
+        this.newObj("ghostrectangle", width/2,-50,width,100);
+        bods[bods.length-1].makeStatic();
     }
     
     static setGravity(_xDir, _yDir){
@@ -127,7 +145,7 @@ class RedHen_2DPhysics {
         // the name of their function to a
         // static method here?
         
-        // Legacy 'hack' to perform a custom
+        // Legacy hack to perform a custom
         // collision event.
        // Matter.Events.on(myEngine, 'collisionStart', hitPipe);
     
@@ -173,7 +191,7 @@ class RedHen_2DPhysics {
          else if (_requestedBody === "circle" || _requestedBody === "Circle")
         bods.push(new Circle(_x, _y, _size, _makeDirect));
         
-        else if (_requestedBody === "GhostRectangle" || _requestedBody === "ghostRectangle")
+        else if (_requestedBody === "GhostRectangle" || _requestedBody === "ghostRectangle" || _requestedBody === "ghostrectangle")
         bods.push(new GhostRectangle(_x, _y, _size, _makeDirect, _size2));
         
         else if (_requestedBody === "Rectangle" || _requestedBody === "rectangle")
