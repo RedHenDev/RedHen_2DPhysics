@@ -22,7 +22,7 @@ function draw(){
     printInstructions();
     
     RedHen_2DPhysics. checkInputgGlobalMovement();
-    RedHen_2DPhysics.updateObjs();
+    RedHen_2DPhysics. updateObjs();
     
 }
 
@@ -50,10 +50,10 @@ function touchEnded(){
     RedHen_2DPhysics.newObj("rectangle", mouseX, mouseY, 40, 40*0.618);
 
     // Set the fill colour of this newly created body.
-    // To refer to the latest body created, find it at
-    // the end of the wrapper's 'bods' array: bods[bods.length-1]
+    // To refer to the latest body created, find it with
+    // 'RedHen_2DPhysics.lasObjectCreated()'.
 
-    bods[bods.length-1].fill = color(0,255,0);   
+    RedHen_2DPhysics.lastObjectCreated().fill = color(0,255,0);   
         
     }
         
