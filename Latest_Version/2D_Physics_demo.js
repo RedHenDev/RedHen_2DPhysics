@@ -17,7 +17,7 @@ function setup(){
     canvas = createCanvas(windowWidth,windowHeight);
     background(72);
     
-    RedHen_2DPhysics.setupMatter();
+    RedHen_2DPhysics.setupMatter(true);
     
     setupBridge();
     
@@ -84,7 +84,7 @@ function setupBridge(){
     let amplitude = 300;
     for (let i = 0; i < noB; i++){
         RedHen_2DPhysics.newObj( "box",bw+i*bw+width/4,noise(i/(bw*10))*amplitude+height/2,bw);
-        bods[bods.length-1].makeStatic();
+        RedHen_2DPhysics.lastObjectCreated().makeStatic();
         bods[bods.length-1].OSR = false;
     }
 }
@@ -92,7 +92,7 @@ function waveBridge(){
     theta+=2;
     // It's noB + 3 since RedHen_2D will
     // have already instantiated 3 edge bods.
-    for (let i = 3; i < noB+3; i++){
+    for (let i = 4; i < noB+4; i++){
         let newY = (height/2) + 64 * Math.sin(radians(theta+i*noB));
         bods[i].makePosition( bods[i].bod.position.x, newY);
     }
