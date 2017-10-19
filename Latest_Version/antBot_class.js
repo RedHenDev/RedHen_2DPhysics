@@ -47,6 +47,10 @@ class RedHen_antBot {
         }
     }
     
+    static returnLastAntCreated(){
+        return RH_ants[RH_ants.length-1];
+    }
+    
     // Checks for p5's 'keyIsDown'.
     static controlAntInput(){
         // First, check if keyTyped()...
@@ -58,7 +62,8 @@ class RedHen_antBot {
             if (myWorld.gravity.y > 0){
                 forceAmount = 2;
             }
-            else {forceAmount = 0.3;}
+            else {forceAmount = 2;}
+            //else {forceAmount = 0.3;}
             
             RH_ants[controlAnt_index].moveForward (forceAmount);
         }
@@ -67,12 +72,15 @@ class RedHen_antBot {
             if (myWorld.gravity.y > 0){
                 forceAmount = 2;
         }
-            else {forceAmount = 0.3;}
+            //else {forceAmount = 0.3;}
+            else {forceAmount = 2;}
             RH_ants[controlAnt_index].moveForward(-forceAmount);
         }
         if (keyIsDown(RIGHT_ARROW)) {
        // setGravity(1,0);
         RH_ants[controlAnt_index].steer(1);
+            
+            
         }
         if (keyIsDown(LEFT_ARROW)) {
        // setGravity(-1,0);
@@ -86,11 +94,12 @@ class RedHen_antBot {
 
 // antBot object.
 class antBot {
-    constructor (_hasMatterBod, _x, _y, _scale){
+    constructor (_hasMatterBod, _x, _y, _scale, _hasBrain){
     
     // Do we have a matter.js physics body?
     this.hasBod = _hasMatterBod;
-    
+    this.hasBrain = _hasBrain;
+        
     // My dimensions.
     this.mass = 1;
     this.radius = 10;
@@ -100,7 +109,13 @@ class antBot {
     
     // My locomotive attributes.
     this.hopForce = createVector(0,-1*(this.scale/42));
-    
+    this.steerAmount = 0.04;
+    this.angularSpeedLimit = 0.4;
+        
+    if (this.hasBrain){
+        this.brain = new antBrain(this);
+    } else this.brain = null;
+        
     // My physics.
     // If we have no pos parameters, then
     // position antBot in centre of screen.
@@ -193,6 +208,11 @@ class antBot {
     this.blinkRate = Math.floor(Math.random()*100)+50;
     this.blinkDuration = 0.5; // seconds.
     this.blinkDuration *= 600; // Instead of calculating everytime we render.
+        
+    // Antenna 'handedness'/laterality.
+    if (Math.random() < 0.5)
+        this.antennaLeft = true;
+        else this.antennaLeft = false;
     
     // Now apply scale factor (instead of doing this each time we have to render Blinkie...)
     this.applyScale();
@@ -217,19 +237,47 @@ class antBot {
     this.eyeSizeY = this.eyeSizeX;
     this.pupSizeX = this.eyeSizeX * this.pupilSize;
         
+    // Antenna dimensions.
+    this.antY = (this.height/2) * goldenRatio;
+    this.antX = 4;
+        if (this.antennaLeft)
+    this.antPX = -this.width/3;
+        else this.antPX = this.width/3;
+    this.antPY = (this.height/2) + (this.antY/2);
+    this.antBulb = this.antX*6.18;
+        
     // Pod dimensions.
     this.podSize = (this.scale * this.dm)/5;
     }
     
+    // Apply 'antBrain class' functions.
+    think(){
+        if (this.hasBrain === false) return;
+        //this.brain.setWayPoint(mouseX, mouseY);
+        //this.brain.setWayPoint(RH_ants[0].myBod.bod.position.x,
+        //RH_ants[0].myBod.bod.position.y)
+        if (this.brain.targetObj == null)
+        this.brain.chaseWayPoint(false);
+        else
+        this.brain.chaseParent(true);
+    }
+    
     // Negative for left, positive right.
     steer(_amount){
-        if (this.myBod.bod.angularSpeed > 0.1) return;
+        if (this.myBod.bod.angularSpeed > this.angularSpeedLimit) return;
+        
+        // Always scale _amount between 0 and 1.
+        if (Math.abs(_amount)>1)_amount = _amount/1;
         
         this.myBod.bod.angularSpeed = 0;
         //this.myBod.makeRotate(_amount);
         
+        //this.myBod.bod.angularSpeed = 0;
+        this.myBod.makeAngle(this.myBod.bod.angle+
+                             (_amount * this.steerAmount)); 
+        
         // To add torque!
-        this.myBod.makeSteer((_amount/40) * this.myBod.bod.mass);
+//        this.myBod.makeSteer((_amount/40) * this.myBod.bod.mass);
     }
     
     incScale(_amount){
@@ -345,11 +393,35 @@ class antBot {
             rotate(this.myBod.bod.angle);
         }
     
+        
+        // Antenna. How exciting.
+        fill(this.col);
+        stroke(0);
+        strokeWeight(3);
+        rect(this.pos.x + this.antPX, 
+             this.pos.y - this.antPY,
+                this.antX,this.antY);
+        
+        // Coloured bobble.
+        //stroke(255);
+        //strokeWeight(1);
+        noStroke();
+        fill(this.col,101);
+        ellipse(this.pos.x + this.antPX,
+                this.pos.y - this.antPY-(this.antY/2)-this.antBulb/3,
+            this.antBulb*Math.sin((frameCount/(this.blinkRate/3))));
+        // Bobble halo.
+         noStroke();
+        fill(255,72);
+        ellipse(this.pos.x + this.antPX,
+                this.pos.y - this.antPY-(this.antY/2)-this.antBulb/3,
+  10+this.antBulb*2*Math.sin((frameCount/(this.blinkRate/3))));
+        
+        
         strokeWeight(3);
         stroke(0);
         rectMode(CENTER);
         fill(this.col);
-    
         // Main body.
         rect(this.pos.x, this.pos.y, this.width, this.height);
     
@@ -388,6 +460,8 @@ class antBot {
         this.pupSizeX, 
         this.pupSizeX);
     
+        
+        
         // Pods.
         fill(0,0,255,101);
         stroke(255);

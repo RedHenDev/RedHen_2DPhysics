@@ -10,10 +10,10 @@
 
 // Global variables, giving reference to engine and world.
 // Unlike 'myEngine', 'myWorld' is only an alias.
-var myWorld; 
-var myEngine;
+let myWorld; 
+let myEngine;
 // Mouse contraint.
-var mConstraint;
+let mConstraint;
 
 
 // Array of RedHen_2DPhysics bodies.
@@ -21,7 +21,7 @@ var mConstraint;
 // However, should build in clear way
 // for main .js file to create own arrays
 // (as is the necessary case at time of writing).
-var bods = [];
+let bods = [];
 
 // Off Screen Remove.
 // See updateBods().
@@ -30,7 +30,7 @@ var bods = [];
 // *** WHAT ABOUT OPTING IN WHEN ALL ELSE
 // OUT? I.E. OSR OFF? 
 // *** SO, THIS NEEDS A RE-THINK.
-var OSR = true;
+let OSR = true;
 
 // Static class for setting up physics and setting gravity etc.
 // Mouse interaction will be ON as default.
@@ -113,7 +113,7 @@ class RedHen_2DPhysics {
     // [This is not yet implemented!!!]
     function collision(event){
         // Ref to all pairs of bodies colliding.
-        var pairs = event.pairs;
+        let pairs = event.pairs;
         // Iterate over the pairs to
         // find the condition you're
         // looking for.
@@ -121,8 +121,8 @@ class RedHen_2DPhysics {
             // The event's pairs will have a 
             // bodyA and bodyB object that
             // we can grab here...
-            var bodA = pairs[i].bodyA;
-            var bodB = pairs[i].bodyB;
+            let bodA = pairs[i].bodyA;
+            let bodB = pairs[i].bodyB;
             
             // E.g.
              if (Math.abs(bodA.velocity.x *             bodA.velocity.y) > 4){
@@ -390,7 +390,7 @@ class GhostRectangle extends Obj{
         
         if (_ImakeBody){
             
-            var options = {
+            let options = {
                 isStatic: false,
                 restitution: 0.89,
                 friction: 0.04
@@ -457,7 +457,7 @@ class Box extends Obj {
         // Instantiate a 2D Physics Body, a rectangle.
         // Set default poperties of matter.js object.
         if (_ImakeBody){
-        var options = {
+        let options = {
             isStatic: false,
             restitution: 0.89,
             friction: 0.04
@@ -522,7 +522,7 @@ class Rectangle extends Box{
         // Instantiate a 2D Physics Body, a circle.
         // Set default poperties of matter.js object.
         if (_ImakeBody){
-        var options = {
+        let options = {
             isStatic: false,
             restitution: 0.8,
             friction: 0.04
@@ -588,7 +588,7 @@ class Circle extends Box{
         // Instantiate a 2D Physics Body, a circle.
         // Set default poperties of matter.js object.
         if (_ImakeBody){
-        var options = {
+        let options = {
             isStatic: false,
             restitution: 0.8,
             friction: 0.04
