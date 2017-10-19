@@ -217,8 +217,11 @@ class RedHen_2DPhysics {
     }
     
     // Moves all bods in dir. passed in.
+    // We iterate backwards so as to avoid
+    // array-splice problems if OSR used during
+    // the iteration of this for loop.
     static globalMovement(_xDir, _yDir){
-        for (let i = 0; i < bods.length; i++){
+        for (let i = bods.length-1; i >= 0; i--){
             bods[i].makePosition( bods[i].bod.position.x+ _xDir, bods[i].bod.position.y+ _yDir);
             }
     }
