@@ -38,7 +38,7 @@ class RedHen_2DPhysics {
     
     // Main program calls this to begin using this wrapper class.
     // Sets up mouse contraint by default.
-    static setupMatter(_createWindowBounds){
+    static setupMatter(_createWindowBounds, _mouseCon){
         
         // Instantiate a matter.js world and begin physics.
         myEngine = Matter.Engine.create();
@@ -47,10 +47,9 @@ class RedHen_2DPhysics {
         // Start the engine!
         Matter.Engine.run(myEngine);
         
-        // Mouse constraint on as default.
-        // NB have to use this. keyword here
-        // to refer to static method of this
-        // class?!
+        // Mouse constraint.
+        // Default (null or false) is ON.
+        if (!_mouseCon)
         this.setupMouseConstraint();
         
         // We have functionality, but not yet implemented for general use.
@@ -85,10 +84,10 @@ class RedHen_2DPhysics {
         bods[0].strokeWeight = 4;
         bods[0].OSR = false;
         // Edges.
-        RedHen_2DPhysics.newObj ("GhostRectangle",0-10,height/2,20,height);
+        this.newObj ("GhostRectangle",0-10,height/2,20,height);
         bods[bods.length-1].makeStatic();
         bods[bods.length-1].OSR = false;
-        RedHen_2DPhysics.newObj ("GhostRectangle",width+
+        this.newObj ("GhostRectangle",width+
         10,height/2,20,height);
         bods[bods.length-1].makeStatic();
         bods[bods.length-1].OSR = false;
@@ -106,12 +105,12 @@ class RedHen_2DPhysics {
     
     static setupCollisions(){
         
-    // The collision events function.
-    // Collision *events* may need to use the
-    // *indexID* of the body in order to 
-    // reference the wrapper object's variables.
-    // [This is not yet implemented!!!]
-    function collision(event){
+    // Turn on collision events.
+    // The third parameter 'myCollision' is a 
+    // call back to a custom function.
+        Matter.Events.on(myEngine, 'collisionStart', myCollision);
+        
+    function exampleCollision(event){
         // Ref to all pairs of bodies colliding.
         let pairs = event.pairs;
         // Iterate over the pairs to
@@ -125,31 +124,17 @@ class RedHen_2DPhysics {
             let bodB = pairs[i].bodyB;
             
             // E.g.
-             if (Math.abs(bodA.velocity.x *             bodA.velocity.y) > 4){
-                Matter.Body.setStatic(bodB, true);}
+            // Will swap sleeping mode of
+            // collided object if 'hitter'
+            // is labelled 'boo'.
+             if (bodB.label === 'boo' &&
+                 Math.abs(bodB.velocity.x *             bodB.velocity.y) > 4){
+                Matter.Sleeping.set(bodA, 
+                !bodA.isSleeping);}
             }   // End of forLoop.
-        }       // End of collision events function.
-        
-    // Turn on collision events.
-    // The third parameter 'collision' is a 
-    // call back to the function above.
-        // Comment this out, of course, when
-        // creating custom collision events
-        // with their own callbacks.
-        Matter.Events.on(myEngine, 'collisionStart', collision);
-        
-        // Might we pass in a function name to static events function in here?
-        // So that user can write custom
-        // collision functions in their js
-        // file, and to set this up, pass in
-        // the name of their function to a
-        // static method here?
-        
-        // Legacy hack to perform a custom
-        // collision event.
-       // Matter.Events.on(myEngine, 'collisionStart', hitPipe);
+        }       // End of example collision events function.
     
-    }
+    }   // End of setupCollisions.
     
     // ON as default. Bodies removed from world and array if having gone off-screen.
     static offscreenRemove(_trueIfOn){
@@ -190,6 +175,9 @@ class RedHen_2DPhysics {
         
          else if (_requestedBody === "circle" || _requestedBody === "Circle")
         bods.push(new Circle(_x, _y, _size, _makeDirect));
+        
+        else if (_requestedBody === "GhostCircle" || _requestedBody === "ghostCircle")
+        bods.push(new GhostCircle(_x, _y, _size, _makeDirect));
         
         else if (_requestedBody === "GhostRectangle" || _requestedBody === "ghostRectangle" || _requestedBody === "ghostrectangle")
         bods.push(new GhostRectangle(_x, _y, _size, _makeDirect, _size2));
@@ -340,6 +328,11 @@ class Obj {
         Matter.Body.scale(this.bod, _scale, _scale);
     }
 
+    // Set a new mass.
+    makeMass(_mass){
+        Matter.Body.setMass(this.bod, _mass);
+    }
+    
     // Makes the body (permanently) static.
     makeStatic(){
         Matter.Body.setStatic(this.bod, true);
@@ -397,6 +390,27 @@ class GhostRectangle extends Obj{
             }
             
             this.bod = Matter.Bodies.rectangle(this.pos.x,this.pos.y,this.dia,this.height,options);  
+        this.id = bods.length-1;
+            // Add the body to the Physics World.
+            Matter.World.add(myWorld, this.bod);
+        }
+    }
+}
+
+// A permanently non-rendered circle.
+class GhostCircle extends Obj{
+    constructor(_x, _y, _radius, _ImakeBody){
+        super(_x, _y, _radius * 2, false);
+        
+        if (_ImakeBody){
+            
+            let options = {
+                isStatic: false,
+                restitution: 0.89,
+                friction: 0.04
+            }
+            
+            this.bod = Matter.Bodies.circle(this.pos.x,this.pos.y,this.rad,options);  
         this.id = bods.length-1;
             // Add the body to the Physics World.
             Matter.World.add(myWorld, this.bod);
