@@ -17,7 +17,7 @@ function setup(){
     canvas = createCanvas(windowWidth,windowHeight);
     background(72);
     
-    RedHen_2DPhysics.setupMatter(true);
+    RedHen_2DPhysics.setupMatter(true, false);
     
     setupBridge();
     

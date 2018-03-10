@@ -173,6 +173,9 @@ class RedHen_2DPhysics {
            _requestedBody === "box")
         bods.push(new Box(_x, _y, _size, _makeDirect));
         
+        else if (_requestedBody === "square" || _requestedBody === "Square")
+        bods.push(new Box(_x, _y, _size, _makeDirect));
+        
          else if (_requestedBody === "circle" || _requestedBody === "Circle")
         bods.push(new Circle(_x, _y, _size, _makeDirect));
         
