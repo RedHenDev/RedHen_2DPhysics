@@ -21,7 +21,7 @@ function setup(){
     
     setupBridge();
     
-    // Create 7 blinkies ('antBots') of random scale.
+    // Create 2 blinkies ('antBots') of random scale.
     for (let i = 0; i < 2; i++){
         RH_ants.push(new antBot(true, Math.random()*width, 64, Math.floor(Math.random()*width/200)+1));
     }
