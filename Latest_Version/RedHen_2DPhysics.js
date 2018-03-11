@@ -329,6 +329,7 @@ class Obj {
     // (I think according to new area).
     makeScale(_scale){
         Matter.Body.scale(this.bod, _scale, _scale);
+        this.dia *= _scale;
     }
 
     // Set a new mass.
@@ -372,6 +373,13 @@ class Obj {
     // Applies force from centre of the matter.js body.
     addForce(_vector){
         Matter.Body.applyForce(this.bod, this.bod.position, _vector)
+    }
+    
+    // Add or change the label of an object.
+    // So that we can write 'obj.label = ...'
+    // instead of 'obj.bod.label = ...'
+    label(_label){
+        this.bod.label = _label;
     }
 
 }
