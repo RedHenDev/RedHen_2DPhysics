@@ -25,7 +25,7 @@ RedHen_2DPhysics.newObj("circle", mouseX, mouseY, 28);
 }
 </b>
 
-If you wanted a green rectangle, instead, you would do the following:
+If you wanted a green rectangle instead, you would do the following:
 
 <b>
 function mousePressed(){
@@ -51,8 +51,7 @@ By default, the wrapper will create bodies around the canvas area so that create
 
 You can manage gravity, change the size and rotation of bodies, and switch bodies to static or dynamic through the wrapper. These are all managed through static functions.
 
-Currently, I'm working on a way to handle collision events. You can do this with the present version, and for example see my [No Man's Flappycraft](http://www.redhendev.com/NoMansFlappyCraft) to see this functionality in action :)
-However, at present this would require you to fiddle with the code of the wrapper yourself -- simple enough, but not ideal.
+Here's an example of the physics in action: [InfinitePac-man](https://redhendev.github.io/InfinitePacman/)  :)
 
 If you'd like any additional features, or have found a bug/issue -- do get in contact. 
 
