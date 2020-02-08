@@ -47,7 +47,7 @@ RedHen_2DPhysics.lastObjectCreated().fill = color(0,255,0);
 The wrapper also allows you to create rectangles and 'ghost' bodies (bodies that are not rendered, for use with your own rendering code).
 You can control the stroke and fill colours, too, through the wrapper, as well as using textures (.jpg or .png -- e.g. after having created a new body, <b>RedHen_2DPhysics.lastObjectCreated().texture = exampleTextureVariable;</b> ).
 
-By default, the wrapper will create bodies around the canvas area so that created bodies stay on screen. If bodies fly off screen, by default they will be removed from the array of bodies (to help performance); though, if you don't want this to happen, you can turn off the behaviour as needed: <b>RedHen_2DPhysics.lastObjectCreated.OSR = false;</b>.
+By default, the wrapper will create bodies around the canvas area so that created bodies stay on screen. If bodies fly off screen, by default they will be removed from the array of bodies (to help performance); though, if you don't want this to happen, you can turn off the behaviour as needed: <b>RedHen_2DPhysics.lastObjectCreated().OSR = false;</b>.
 
 You can manage gravity, change the size and rotation of bodies, and switch bodies to static or dynamic through the wrapper. These are all managed through static functions.
 
